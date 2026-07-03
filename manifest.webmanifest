@@ -1,0 +1,26 @@
+{
+  "name": "首都高ぐるり — 安く周回できるコース提案",
+  "short_name": "首都高ぐるり",
+  "description": "首都高速の距離別料金の仕組みを使って、最低料金で楽しめる周回コースを提案するアプリ。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0f1e",
+  "theme_color": "#0a0f1e",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

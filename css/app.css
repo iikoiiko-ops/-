@@ -1,0 +1,830 @@
+/* app.css — 首都高ぐるり スタイル(CSS変数でテーマ管理・iOS Safari最適化) */
+
+:root {
+  color-scheme: dark light;
+
+  /* ダークテーマ(既定・夜間走行が主用途) */
+  --bg: #0a0f1e;
+  --bg-elevated: #131a2c;
+  --bg-card: #161f36;
+  --bg-card-active: #1c2740;
+  --text: #eef1f8;
+  --text-dim: #9aa4bd;
+  --text-faint: #6b7593;
+  --accent: #34c785;
+  --accent-strong: #4ee0a0;
+  --accent-contrast: #04150c;
+  --border: #262f48;
+  --danger: #ff6b6b;
+  --entry-marker: #34c785;
+  --exit-marker: #ff6b6b;
+  --pa-marker: #ffb84d;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f4f6fb;
+    --bg-elevated: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-active: #eef1f8;
+    --text: #10182c;
+    --text-dim: #4b5570;
+    --text-faint: #7a839c;
+    --accent: #0d9a5e;
+    --accent-strong: #0b8450;
+    --accent-contrast: #ffffff;
+    --border: #dfe4ee;
+    --danger: #d6394b;
+    --entry-marker: #0d9a5e;
+    --exit-marker: #d6394b;
+    --pa-marker: #c97a12;
+    --shadow: 0 8px 24px rgba(20, 30, 60, 0.12);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+    "Yu Gothic", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+h1, h2, h3, p, ul, ol, dl {
+  margin: 0;
+}
+
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+.app-shell {
+  max-width: 640px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ヘッダー */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-top: calc(var(--safe-top) + 10px);
+  padding-bottom: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+}
+
+.app-header h1 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.header-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 4px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.header-btn:active {
+  opacity: 0.55;
+}
+
+.header-spacer {
+  flex: 1;
+}
+
+.header-link {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
+  border-radius: 8px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.header-link:active {
+  opacity: 0.6;
+}
+
+/* メイン */
+.app-main {
+  flex: 1;
+  padding: 14px 16px calc(24px + var(--safe-bottom));
+  overscroll-behavior-y: contain;
+}
+
+/* 車種セレクタ(セグメンテッドコントロール) */
+.segmented {
+  display: flex;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.segmented button {
+  flex: 1;
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  font-weight: 600;
+  min-height: 40px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.segmented button.active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.segmented button:active {
+  opacity: 0.8;
+}
+
+.control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.control-label {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* 並べ替えメニュー */
+.sort-select-wrap {
+  position: relative;
+}
+
+.sort-select {
+  width: 100%;
+  appearance: none;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  min-height: 44px;
+  border-radius: 12px;
+  padding: 0 36px 0 14px;
+  cursor: pointer;
+}
+
+.sort-select-wrap::after {
+  content: "▾";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+/* 深夜割引トグル */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  min-height: 44px;
+}
+
+.toggle-row .toggle-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggle-row .toggle-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.toggle-row .toggle-sub {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.switch {
+  appearance: none;
+  border: none;
+  width: 50px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--border);
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+}
+
+.switch.on {
+  background: var(--accent);
+}
+
+.switch.on::after {
+  transform: translateX(20px);
+}
+
+/* コースカード一覧 */
+.course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.course-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 14px 12px;
+  box-shadow: var(--shadow);
+  min-height: 44px;
+}
+
+.course-card-link {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  z-index: 1;
+}
+
+.course-card-link:active ~ * {
+  opacity: 0.85;
+}
+
+.course-card:active {
+  background: var(--bg-card-active);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.card-name {
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.card-tagline {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.fav-btn {
+  position: relative;
+  z-index: 3;
+  pointer-events: auto;
+  appearance: none;
+  border: none;
+  background: transparent;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -10px -8px 0 0;
+  font-size: 1.3rem;
+  color: var(--text-faint);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.fav-btn[aria-pressed="true"] {
+  color: var(--danger);
+}
+
+.fav-btn:active {
+  transform: scale(0.85);
+}
+
+.card-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 10px;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.card-price {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--accent-strong);
+}
+
+.card-price-unit {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.cost-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.card-meta {
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  flex-wrap: wrap;
+}
+
+.card-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.stars {
+  letter-spacing: 1px;
+  color: var(--pa-marker);
+}
+
+.tag-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tag-chip {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+/* 詳細画面 */
+.detail-hero {
+  margin-bottom: 18px;
+}
+
+.detail-hero h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.detail-tagline {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+}
+
+.hero-price {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--accent-strong);
+}
+
+.hero-price-sub {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.stat-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.stat-box .stat-label {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  margin-bottom: 3px;
+}
+
+.stat-box .stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.section {
+  margin-top: 22px;
+}
+
+.section h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.map-route {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.map-route--active {
+  stroke: var(--accent);
+  stroke-width: 4.5;
+}
+
+.map-route-label {
+  fill: var(--text-faint);
+  font-size: 8px;
+}
+
+.map-center-label {
+  fill: var(--text-dim);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.map-marker circle {
+  stroke: var(--bg-card);
+  stroke-width: 2;
+}
+
+.map-marker-entry circle {
+  fill: var(--entry-marker);
+}
+
+.map-marker-exit circle {
+  fill: var(--exit-marker);
+}
+
+.map-marker-pa circle {
+  fill: var(--pa-marker);
+}
+
+.map-marker-landmark circle {
+  fill: var(--text-dim);
+}
+
+.map-marker-glyph {
+  fill: #08110a;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.map-marker-label {
+  fill: var(--text);
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 14px;
+}
+
+.timeline-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.timeline-item:first-child .timeline-dot {
+  background: var(--entry-marker);
+}
+
+.timeline-item:last-child .timeline-dot {
+  background: var(--exit-marker);
+}
+
+.timeline-line {
+  flex: 1;
+  width: 2px;
+  background: var(--border);
+  margin-top: 2px;
+}
+
+.timeline-label {
+  font-size: 0.85rem;
+  padding-top: 0;
+}
+
+.pa-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+
+.pa-card .pa-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  margin-bottom: 2px;
+}
+
+.pa-card .pa-note {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.highlight-list li {
+  font-size: 0.88rem;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.highlight-list li:last-child {
+  border-bottom: none;
+}
+
+.notes-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.notes-box + .notes-box {
+  margin-top: 8px;
+}
+
+.toll-note-line {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+/* about 画面 */
+.about-lead {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+.fee-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 0.82rem;
+}
+
+.fee-table th, .fee-table td {
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.fee-table th {
+  background: var(--bg-elevated);
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.formula-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.diagram-caption {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+.notice-block {
+  background: color-mix(in srgb, var(--danger) 10%, var(--bg-card));
+  border: 1px solid color-mix(in srgb, var(--danger) 35%, var(--border));
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--text);
+  margin-top: 10px;
+}
+
+.footer-disclaimer {
+  margin-top: 28px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  line-height: 1.6;
+}
+
+/* 起動時の安全注意モーダル */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 14, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px calc(20px + var(--safe-right)) calc(20px + var(--safe-bottom)) calc(20px + var(--safe-left));
+}
+
+.modal-card {
+  background: var(--bg-elevated);
+  border-radius: 20px;
+  max-width: 420px;
+  width: 100%;
+  padding: 22px 20px calc(20px + var(--safe-bottom) * 0);
+  box-shadow: var(--shadow);
+  max-height: 86dvh;
+  overflow-y: auto;
+}
+
+.modal-card h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.modal-card p {
+  font-size: 0.86rem;
+  line-height: 1.7;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.modal-card p:last-of-type {
+  margin-bottom: 16px;
+}
+
+.modal-agree-btn {
+  appearance: none;
+  border: none;
+  width: 100%;
+  min-height: 50px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modal-agree-btn:active {
+  opacity: 0.85;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+}
+
+/* iPad幅など広い画面でも中央寄せで読みやすく(すでに .app-shell の max-width で対応) */
+@media (min-width: 700px) {
+  body {
+    background: var(--bg);
+  }
+}
